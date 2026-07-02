@@ -1,0 +1,27 @@
+.exchange-card {
+    width: 180px;
+    padding: 20px;
+
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+
+    background: white;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,.05);
+
+    transition: .2s;
+}
+
+.exchange-card:hover {
+    transform: translateY(-4px);
+}
+
+.exchange-card h3 {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+}
+
+.exchange-card__value {
+    font-size: 1.8rem;
+    font-weight: bold;
+}

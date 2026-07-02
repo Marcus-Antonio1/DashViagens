@@ -1,32 +1,17 @@
-import { NavLink } from "react-router-dom";
-import { Container } from "../../ui";
-
-import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 export function Navbar() {
   return (
-    <header className="navbar">
-      <Container>
-        <div className="navbar-content">
+    <header>
+      <nav>
+        <Link to="/">DashViagens</Link>
 
-          <NavLink to="/" className="logo">
-            🌍 DashViagens
-          </NavLink>
-
-          <nav>
-
-            <NavLink to="/">Início</NavLink>
-
-            <NavLink to="/countries">Países</NavLink>
-
-            <NavLink to="/exchange">Câmbio</NavLink>
-
-            <NavLink to="/budget">Calculadora</NavLink>
-
-          </nav>
-
+        <div>
+          <Link to="/">Início</Link>
+          <Link to="/countries">Países</Link>
+          <Link to="/budget">Calculadora</Link>
         </div>
-      </Container>
+      </nav>
     </header>
   );
 }
