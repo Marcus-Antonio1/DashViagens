@@ -13,15 +13,15 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 
 
 /**
- * TTL curto para cotacoes de cambio (mudam pouco ao longo do dia) e para
- * respostas de clima. Ajuste os nomes dos caches conforme forem criados
- * nos services com @Cacheable.
+ * Cache em memória simples para desenvolvimento sem Redis.
+ * Para produção: reativar spring-boot-starter-data-redis no pom.xml,
+ * trocar cache.type para redis e restaurar o RedisCacheManagerBuilderCustomizer.
  */
 @Configuration
 @EnableCaching
 public class CacheConfig {
 
-    @Bean
+/**    @Bean
     RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
 
         RedisCacheConfiguration defaultCache =
@@ -43,6 +43,6 @@ public class CacheConfig {
                 .cacheDefaults(defaultCache)
                 .withInitialCacheConfigurations(caches)
                 .build();
-    }
+    }*/
 
 }
