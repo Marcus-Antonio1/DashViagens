@@ -1,0 +1,1 @@
+export { AttractionsPage } from "./AttractionsPage";

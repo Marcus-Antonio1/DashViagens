@@ -8,8 +8,12 @@ export function Navbar() {
 
         <div>
           <Link to="/">Início</Link>
+
           <Link to="/countries">Países</Link>
+
           <Link to="/budget">Calculadora</Link>
+
+          <Link to="/attractions">Atrações</Link>
         </div>
       </nav>
     </header>

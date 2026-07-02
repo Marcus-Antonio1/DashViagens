@@ -1,7 +1,7 @@
-export function BudgetPage() {
+export function AttractionsPage() {
   return (
     <div>
-      <h1>Calculadora de Viagem</h1>
+      <h1>Atrações</h1>
 
       <p>Em desenvolvimento...</p>
     </div>
