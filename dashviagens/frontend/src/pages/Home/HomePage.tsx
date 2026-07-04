@@ -1,11 +1,14 @@
-import { HeroSection } from "../../components/home/HeroSection";
-import { ExchangeSection } from "../../components/exchange/ExchangeSection";
+import { HeroSection }     from "../../components/home/HeroSection/HeroSection";
+import { ExchangeSection } from "../../components/exchange/ExchangeSection/ExchangeSection";
+import "./HomePage.css";
 
 export function HomePage() {
   return (
     <>
       <HeroSection />
-      <ExchangeSection />
+      <div className="home-container">
+        <ExchangeSection />
+      </div>
     </>
   );
 }

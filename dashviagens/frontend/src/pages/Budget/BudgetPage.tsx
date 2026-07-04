@@ -1,139 +1,172 @@
 import { useState } from "react";
+import { useCountries } from "../../hooks/useCountries";
+import { api } from "../../api/axios";
+import "./BudgetPage.css";
 
-import { useBudget } from "../../hooks/useBudget";
+interface BudgetResult {
+  countryCode: string;
+  days: number;
+  estimatedFlight: number;
+  estimatedHotel: number;
+  estimatedFood: number;
+  estimatedTransport: number;
+  estimatedActivities: number;
+  totalEstimated: number;
+  totalBudget: number;
+  remaining: number;
+  withinBudget: boolean;
+}
+
+const fmt = (v: number) =>
+  v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
 export function BudgetPage() {
-
-  const { mutate, data, isPending } = useBudget();
+  const { data: countries } = useCountries();
 
   const [countryCode, setCountryCode] = useState("");
+  const [days,        setDays]        = useState("10");
+  const [budget,      setBudget]      = useState("15000");
+  const [result,      setResult]      = useState<BudgetResult | null>(null);
+  const [loading,     setLoading]     = useState(false);
+  const [error,       setError]       = useState("");
 
-  const [days, setDays] = useState(7);
-
-  const [totalBudget, setTotalBudget] = useState(10000);
-
-  function handleSubmit(e: React.FormEvent) {
-
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
-    mutate({
-
-      countryCode,
-
-      days,
-
-      totalBudget,
-
-    });
-
+    if (!countryCode) { setError("Selecione um destino."); return; }
+    setError(""); setLoading(true);
+    try {
+      const res = await api.post("/costs/estimate", {
+        countryCode,
+        days: Number(days),
+        totalBudget: Number(budget),
+      });
+      setResult(res.data);
+    } catch {
+      setError("Erro ao calcular. Verifique se o país possui custo médio cadastrado.");
+    } finally {
+      setLoading(false);
+    }
   }
 
+  const selectedCountry = countries?.find(c => c.code === countryCode);
+
   return (
-
-    <>
-
-      <h1>Calculadora de Viagem</h1>
-
-      <form onSubmit={handleSubmit}>
-
-        <div>
-
-          <label>País</label>
-
-          <input
-
-            value={countryCode}
-
-            onChange={(e)=>setCountryCode(e.target.value.toUpperCase())}
-
-            placeholder="JP"
-
-          />
-
+    <div className="budget-page">
+      <div className="budget-container">
+        <div className="page-header">
+          <h1 className="page-title">Calculadora de viagem</h1>
+          <p className="page-sub">Estime o custo total com base no destino e orçamento</p>
         </div>
 
-        <div>
+        <div className="budget-layout">
+          {/* Formulário */}
+          <div className="budget-form-card">
+            <form onSubmit={handleSubmit}>
+              <div className="budget-form-group">
+                <label className="budget-label">Destino</label>
+                <select
+                  className="budget-select"
+                  value={countryCode}
+                  onChange={e => setCountryCode(e.target.value)}
+                >
+                  <option value="">Selecione um país...</option>
+                  {countries?.map(c => (
+                    <option key={c.code} value={c.code}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-          <label>Dias</label>
+              <div className="budget-form-row">
+                <div className="budget-form-group">
+                  <label className="budget-label">Duração (dias)</label>
+                  <input
+                    className="budget-input"
+                    type="number"
+                    min="1"
+                    max="365"
+                    value={days}
+                    onChange={e => setDays(e.target.value)}
+                  />
+                </div>
+                <div className="budget-form-group">
+                  <label className="budget-label">Orçamento total (R$)</label>
+                  <input
+                    className="budget-input"
+                    type="number"
+                    min="1"
+                    value={budget}
+                    onChange={e => setBudget(e.target.value)}
+                  />
+                </div>
+              </div>
 
-          <input
+              {error && <p className="budget-error">{error}</p>}
 
-            type="number"
+              <button className="budget-btn" type="submit" disabled={loading}>
+                {loading ? "Calculando..." : "Calcular orçamento"}
+              </button>
+            </form>
+          </div>
 
-            value={days}
+          {/* Resultado */}
+          {result && (
+            <div className="budget-result">
+              <div className="budget-result__header">
+                <div>
+                  <p className="budget-result__subtitle">
+                    {result.days} dias em {selectedCountry?.name ?? result.countryCode}
+                  </p>
+                  <p className="budget-result__total-label">Total estimado</p>
+                </div>
+                <p className="budget-result__total">{fmt(result.totalEstimated)}</p>
+              </div>
 
-            onChange={(e)=>setDays(Number(e.target.value))}
+              <div className="budget-result__rows">
+                <div className="budget-result__row">
+                  <span className="budget-result__item">✈ Passagem estimada</span>
+                  <span className="budget-result__value">{fmt(result.estimatedFlight)}</span>
+                </div>
+                <div className="budget-result__row">
+                  <span className="budget-result__item">🏨 Hotel · {result.days} dias</span>
+                  <span className="budget-result__value">{fmt(result.estimatedHotel)}</span>
+                </div>
+                <div className="budget-result__row">
+                  <span className="budget-result__item">🍽 Alimentação · {result.days} dias</span>
+                  <span className="budget-result__value">{fmt(result.estimatedFood)}</span>
+                </div>
+                <div className="budget-result__row">
+                  <span className="budget-result__item">🚌 Transporte · {result.days} dias</span>
+                  <span className="budget-result__value">{fmt(result.estimatedTransport)}</span>
+                </div>
+                <div className="budget-result__row">
+                  <span className="budget-result__item">📸 Passeios · {result.days} dias</span>
+                  <span className="budget-result__value">{fmt(result.estimatedActivities)}</span>
+                </div>
+              </div>
 
-          />
+              <div className={`budget-result__surplus ${!result.withinBudget ? "deficit" : ""}`}>
+                <span className="budget-result__surplus-label">
+                  {result.withinBudget ? "Reserva disponível" : "Orçamento insuficiente"}
+                </span>
+                <span className="budget-result__surplus-value">
+                  {fmt(Math.abs(result.remaining))}
+                </span>
+              </div>
+            </div>
+          )}
 
+          {!result && !loading && (
+            <div className="budget-placeholder">
+              <div className="budget-placeholder__icon">🧮</div>
+              <p className="budget-placeholder__text">
+                Preencha o formulário ao lado para ver a estimativa de custo detalhada.
+              </p>
+            </div>
+          )}
         </div>
-
-        <div>
-
-          <label>Orçamento</label>
-
-          <input
-
-            type="number"
-
-            value={totalBudget}
-
-            onChange={(e)=>setTotalBudget(Number(e.target.value))}
-
-          />
-
-        </div>
-
-        <button type="submit">
-
-          Calcular
-
-        </button>
-
-      </form>
-
-      {isPending && <p>Calculando...</p>}
-
-      {data && (
-
-        <>
-
-          <h2>Resultado</h2>
-
-          <p>Passagem: R$ {data.estimatedFlight.toFixed(2)}</p>
-
-          <p>Hotel: R$ {data.estimatedHotel.toFixed(2)}</p>
-
-          <p>Alimentação: R$ {data.estimatedFood.toFixed(2)}</p>
-
-          <p>Transporte: R$ {data.estimatedTransport.toFixed(2)}</p>
-
-          <p>Passeios: R$ {data.estimatedActivities.toFixed(2)}</p>
-
-          <hr />
-
-          <p>Total estimado: R$ {data.totalEstimated.toFixed(2)}</p>
-
-          <p>Orçamento: R$ {data.totalBudget.toFixed(2)}</p>
-
-          <p>Saldo restante: R$ {data.remaining.toFixed(2)}</p>
-
-          <h3>
-
-            {data.withinBudget
-
-              ? "✅ Dentro do orçamento"
-
-              : "❌ Fora do orçamento"}
-
-          </h3>
-
-        </>
-
-      )}
-
-    </>
-
+      </div>
+    </div>
   );
-
 }

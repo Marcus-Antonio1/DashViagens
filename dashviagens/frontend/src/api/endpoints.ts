@@ -1,6 +1,7 @@
 export const ENDPOINTS = {
-  exchange: "/exchange/rates",
-  countries: "/countries",
-  budget: "/costs/estimate",
-  auth: "/admin/auth/login",
-} as const;
+  exchange:    "/exchange/rates",
+  countries:   "/countries",
+  attractions: "/attractions",
+  costs:       "/costs",
+  estimate:    "/costs/estimate",
+};

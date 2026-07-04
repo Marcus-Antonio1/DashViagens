@@ -1,5 +1,41 @@
-.country-card{
-    border:1px solid #ddd;
-    border-radius:12px;
-    padding:20px;
+.country-card {
+  background: var(--color-surface);
+  border: 0.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
 }
+.country-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.country-card__hero {
+  height: 96px;
+  display: flex; align-items: flex-end; padding: 10px 14px;
+}
+
+.country-card__flag { font-size: 32px; line-height: 1; }
+
+.country-card__body { padding: 12px 14px; }
+
+.country-card__name {
+  font-size: 14px; font-weight: 600;
+  color: var(--color-ink); margin-bottom: 2px;
+}
+
+.country-card__meta {
+  font-size: 11px; color: var(--color-ink-5);
+  font-family: var(--font-mono); margin-bottom: 8px;
+}
+
+.country-card__badges { display: flex; gap: 5px; flex-wrap: wrap; }
+
+.badge {
+  display: inline-block; font-size: 10px; font-weight: 500;
+  padding: 3px 8px; border-radius: 4px; border: 0.5px solid transparent;
+}
+.badge-blue  { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
+.badge-slate { background: #F1F5F9; color: #475569; border-color: #CBD5E1; }
+.badge-green { background: #F0FDF4; color: #15803D; border-color: #BBF7D0; }

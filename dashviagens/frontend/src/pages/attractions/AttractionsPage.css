@@ -1,0 +1,59 @@
+.attractions-page { padding-bottom: 48px; }
+.attractions-container { max-width: 1100px; margin: 0 auto; padding: 0 24px; padding-top: 24px; }
+
+.attractions-back {
+  display: inline-block; font-size: 13px; color: var(--color-accent-dk);
+  text-decoration: none; margin-bottom: 16px;
+}
+
+.attractions-hero {
+  background: var(--color-ink); border-radius: var(--radius-md);
+  padding: 20px 24px; display: flex; align-items: center;
+  gap: 16px; margin-bottom: 20px;
+}
+.attractions-hero__flag { font-size: 48px; line-height: 1; }
+.attractions-hero__name {
+  font-size: 22px; font-weight: 700; color: #fff;
+  letter-spacing: -0.02em; margin-bottom: 4px;
+}
+.attractions-hero__meta { font-size: 12px; color: #64748B; font-family: var(--font-mono); }
+
+.attractions-map {
+  height: 280px; border-radius: var(--radius-md);
+  border: 0.5px solid var(--color-border);
+  overflow: hidden; margin-bottom: 24px;
+}
+
+.attractions-section-title {
+  font-size: 14px; font-weight: 600; color: var(--color-ink-4);
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px;
+}
+
+.attractions-list {
+  background: var(--color-surface);
+  border: 0.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.attraction-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 16px; border-bottom: 0.5px solid #F8FAFC;
+}
+.attraction-item:last-child { border-bottom: none; }
+
+.attraction-item__num {
+  width: 26px; height: 26px; flex-shrink: 0;
+  background: var(--color-bg); border: 0.5px solid var(--color-border);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--color-ink-5); font-weight: 500;
+}
+
+.attraction-item__name { font-size: 13px; font-weight: 500; color: var(--color-ink); }
+.attraction-item__desc { font-size: 12px; color: var(--color-ink-4); margin-top: 2px; }
+
+.attractions-loading, .attractions-error, .attractions-empty {
+  padding: 48px 24px; text-align: center; font-size: 14px; color: var(--color-ink-5);
+}
+.attractions-error { color: var(--color-down); }
+.attractions-empty a { color: var(--color-accent-dk); }

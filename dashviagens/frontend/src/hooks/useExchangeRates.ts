@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { getExchangeRates } from "../api/exchangeApi";
 
-export function useExchangeRates(base = "BRL") {
+export function useExchangeRates() {
   return useQuery({
-    queryKey: ["exchange-rates", base],
-    queryFn: () => getExchangeRates(base),
-    staleTime: 1000 * 60 * 10,
+    queryKey: ["exchange-rates"],
+    queryFn: getExchangeRates,
+    staleTime: 1000 * 60 * 10, // 10 min
   });
 }

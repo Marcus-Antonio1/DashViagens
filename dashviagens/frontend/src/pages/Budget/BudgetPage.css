@@ -1,0 +1,132 @@
+.budget-page { padding-bottom: 48px; }
+.budget-container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+.page-header { padding: 32px 0 20px; }
+.page-title { font-size: 22px; font-weight: 700; color: var(--color-ink); letter-spacing: -0.03em; margin-bottom: 4px; }
+.page-sub { font-size: 13px; color: var(--color-ink-5); }
+
+.budget-layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* Form */
+.budget-form-card {
+  background: var(--color-surface);
+  border: 0.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.budget-form-group { margin-bottom: 14px; }
+
+.budget-label {
+  display: block; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--color-ink-5); margin-bottom: 5px;
+}
+
+.budget-select, .budget-input {
+  width: 100%;
+  background: var(--color-bg);
+  border: 0.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px; font-size: 14px; color: var(--color-ink);
+  transition: border-color 0.15s;
+}
+.budget-select:focus, .budget-input:focus {
+  outline: none; border-color: var(--color-accent);
+}
+
+.budget-form-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;
+}
+.budget-form-row .budget-form-group { margin-bottom: 0; }
+
+.budget-error {
+  font-size: 12px; color: var(--color-down);
+  background: #FEF2F2; border: 0.5px solid #FECACA;
+  border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 14px;
+}
+
+.budget-btn {
+  width: 100%; background: var(--color-ink); color: #fff;
+  border: none; border-radius: var(--radius-sm);
+  padding: 11px; font-size: 14px; font-weight: 500;
+  transition: background 0.15s;
+}
+.budget-btn:hover { background: #1E293B; }
+.budget-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Result */
+.budget-result {
+  background: var(--color-surface);
+  border: 0.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.budget-result__header {
+  background: var(--color-ink);
+  padding: 16px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.budget-result__subtitle {
+  font-size: 12px; color: #475569; margin-bottom: 2px;
+}
+.budget-result__total-label {
+  font-size: 12px; color: #64748B;
+}
+.budget-result__total {
+  font-size: 22px; font-weight: 700;
+  color: var(--color-accent); font-family: var(--font-mono);
+  letter-spacing: -0.02em;
+}
+
+.budget-result__rows { padding: 4px 0; }
+
+.budget-result__row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 11px 20px; border-bottom: 0.5px solid #F8FAFC;
+}
+.budget-result__row:last-child { border-bottom: none; }
+
+.budget-result__item { font-size: 13px; color: var(--color-ink-3); }
+
+.budget-result__value {
+  font-size: 13px; font-weight: 500;
+  font-family: var(--font-mono); color: var(--color-ink);
+}
+
+.budget-result__surplus {
+  background: #F0FDF4; border-top: 0.5px solid #BBF7D0;
+  padding: 12px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.budget-result__surplus.deficit { background: #FEF2F2; border-top-color: #FECACA; }
+
+.budget-result__surplus-label { font-size: 13px; font-weight: 500; color: #15803D; }
+.budget-result__surplus.deficit .budget-result__surplus-label { color: #B91C1C; }
+
+.budget-result__surplus-value {
+  font-size: 15px; font-weight: 700;
+  font-family: var(--font-mono); color: #15803D;
+}
+.budget-result__surplus.deficit .budget-result__surplus-value { color: #B91C1C; }
+
+/* Placeholder */
+.budget-placeholder {
+  background: var(--color-surface);
+  border: 0.5px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 48px 24px; text-align: center;
+}
+.budget-placeholder__icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
+.budget-placeholder__text { font-size: 14px; color: var(--color-ink-5); max-width: 260px; margin: 0 auto; }
+
+@media (max-width: 900px) {
+  .budget-layout { grid-template-columns: 1fr; }
+}
