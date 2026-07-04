@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-/**
- * Integração com a Frankfurter API (https://www.frankfurter.app) para cotacoes.
+/*
+ * Integração com a Frankfurter API (https://www.frankfurter.app) para cotações.
  */
 @Component
 public class ExchangeRateClient {
@@ -14,7 +14,7 @@ public class ExchangeRateClient {
     private final WebClient webClient;
 
     public ExchangeRateClient(WebClient.Builder webClientBuilder,
-                               @Value("${dashviagens.external-apis.exchange-rate-base-url}") String baseUrl) {
+                              @Value("${dashviagens.external-apis.exchange-rate-base-url}") String baseUrl) {
         this.webClient = webClientBuilder.baseUrl(baseUrl).build();
     }
 

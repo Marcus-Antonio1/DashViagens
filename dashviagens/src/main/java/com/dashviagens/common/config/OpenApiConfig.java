@@ -15,7 +15,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("DashViagens API")
-                        .description("Cambio, paises, atracoes turisticas e calculadora de viagem")
+                        .description("Câmbio, países, atrações turisticas e calculadora de viagem")
                         .version("v0.1"))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .schemaRequirement("bearerAuth", new SecurityScheme()

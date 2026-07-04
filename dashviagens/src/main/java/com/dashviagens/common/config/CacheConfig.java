@@ -7,10 +7,10 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-
+/**import org.springframework.data.redis.cache.RedisCacheConfiguration;
+ import org.springframework.data.redis.cache.RedisCacheManager;
+ import org.springframework.data.redis.connection.RedisConnectionFactory;
+ */
 
 /**
  * Cache em memória simples para desenvolvimento sem Redis.
@@ -22,27 +22,27 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 public class CacheConfig {
 
 /**    @Bean
-    RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
 
-        RedisCacheConfiguration defaultCache =
-                RedisCacheConfiguration.defaultCacheConfig()
-                        .entryTtl(Duration.ofHours(1));
+RedisCacheConfiguration defaultCache =
+RedisCacheConfiguration.defaultCacheConfig()
+.entryTtl(Duration.ofHours(1));
 
-        Map<String, RedisCacheConfiguration> caches = Map.of(
-                "exchangeRates",
-                defaultCache.entryTtl(Duration.ofMinutes(15)),
+Map<String, RedisCacheConfiguration> caches = Map.of(
+"exchangeRates",
+defaultCache.entryTtl(Duration.ofMinutes(15)),
 
-                "weather",
-                defaultCache.entryTtl(Duration.ofMinutes(30)),
+"weather",
+defaultCache.entryTtl(Duration.ofMinutes(30)),
 
-                "countries",
-                defaultCache.entryTtl(Duration.ofHours(24))
-        );
+"countries",
+defaultCache.entryTtl(Duration.ofHours(24))
+);
 
-        return RedisCacheManager.builder(connectionFactory)
-                .cacheDefaults(defaultCache)
-                .withInitialCacheConfigurations(caches)
-                .build();
-    }*/
+return RedisCacheManager.builder(connectionFactory)
+.cacheDefaults(defaultCache)
+.withInitialCacheConfigurations(caches)
+.build();
+}*/
 
 }

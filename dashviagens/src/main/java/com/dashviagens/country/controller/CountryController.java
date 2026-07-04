@@ -20,20 +20,21 @@ public class CountryController {
     }
 
     @GetMapping
-    public List<Country> findAll() {
-        return countryService.findAll();
-    }
+    public List<Country> findAll() { return countryService.findAll(); }
 
     @GetMapping("/{code}")
-    public Country findByCode(@PathVariable String code) {
-        return countryService.findByCode(code);
-    }
+    public Country findByCode(@PathVariable String code) { return countryService.findByCode(code); }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Country create(@Valid @RequestBody CountryDTO dto) {
-        return countryService.create(dto);
+    public Country create(@Valid @RequestBody CountryDTO dto) { return countryService.create(dto); }
+
+    @PutMapping("/{id}")
+    public Country update(@PathVariable Long id, @RequestBody CountryDTO dto) {
+        return countryService.update(id, dto);
     }
 
-    // TODO: PUT e DELETE protegidos por ROLE_ADMIN (ja configurado no SecurityConfig)
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) { countryService.delete(id); }
 }

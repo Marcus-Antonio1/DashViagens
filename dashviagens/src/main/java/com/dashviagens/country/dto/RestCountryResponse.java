@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Mapeia exatamente o formato da resposta da REST Countries v3.1.
+ * Mapeia o formato da resposta da REST Countries
  * Tem objetos aninhados: name.common, languages (mapa), currencies (mapa), etc.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)

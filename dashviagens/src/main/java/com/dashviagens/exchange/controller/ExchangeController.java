@@ -1,7 +1,11 @@
 package com.dashviagens.exchange.controller;
 
+import java.math.BigDecimal;
+
+import com.dashviagens.exchange.dto.ConvertResponse;
 import com.dashviagens.exchange.dto.ExchangeRateResponse;
 import com.dashviagens.exchange.service.ExchangeService;
+import jakarta.validation.constraints.Positive;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,10 +21,18 @@ public class ExchangeController {
         this.exchangeService = exchangeService;
     }
 
+    /** GET /api/exchange/rates — cotações em BRL */
     @GetMapping("/rates")
-    public ExchangeRateResponse rates(@RequestParam(defaultValue = "BRL") String base) {
-        return exchangeService.getRates(base);
+    public ExchangeRateResponse rates() {
+        return exchangeService.getRates();
     }
 
-    // TODO: GET /convert?amount=&from=&to=
+    /** GET /api/exchange/convert?amount=5000&from=BRL&to=USD */
+    @GetMapping("/convert")
+    public ConvertResponse convert(
+            @RequestParam @Positive BigDecimal amount,
+            @RequestParam String from,
+            @RequestParam String to) {
+        return exchangeService.convert(amount, from, to);
+    }
 }
