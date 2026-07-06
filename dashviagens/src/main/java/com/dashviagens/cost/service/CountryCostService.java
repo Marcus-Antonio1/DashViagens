@@ -11,7 +11,7 @@ import com.dashviagens.country.service.CountryService;
 import org.springframework.stereotype.Service;
 
 /**
- * CRUD do custo medio diario por pais (rotas de escrita ROLE_ADMIN).
+ * CRUD do custo medio diario por país (rotas de escrita ROLE_ADMIN).
  * Separado do TravelBudgetService: um salva dados, o outro calcula.
  */
 @Service
@@ -32,7 +32,7 @@ public class CountryCostService {
     public CountryCost findByCountryCode(String countryCode) {
         return countryCostRepository.findByCountry_Code(countryCode.toUpperCase())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Custo medio nao encontrado para: " + countryCode));
+                        "Custo medio não encontrado para: " + countryCode));
     }
 
     public CountryCost create(CountryCostDTO dto) {

@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 public interface AttractionRepository extends JpaRepository<Attraction, Long> {
 
     /**
-     * JOIN FETCH carrega o country junto com a atracao numa unica query,
+     * JOIN FETCH carrega o country junto com a atração em um query
      * evitando LazyInitializationException ao acessar attraction.country.code
      * fora da sessao JPA (open-in-view=false).
      */

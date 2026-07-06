@@ -27,7 +27,7 @@ public class AttractionService {
 
     public Attraction findById(Long id) {
         return attractionRepository.findByIdWithCountry(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Atracao nao encontrada: id=" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Atração não encontrada: id=" + id));
     }
 
     public Attraction create(AttractionDTO dto) {
