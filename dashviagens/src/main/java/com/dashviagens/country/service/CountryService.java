@@ -27,12 +27,12 @@ public class CountryService {
 
     public Country findById(Long id) {
         return countryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Pais nao encontrado: id=" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("País não encontrado: id=" + id));
     }
 
     public Country findByCode(String code) {
         return countryRepository.findByCode(code.toUpperCase())
-                .orElseThrow(() -> new ResourceNotFoundException("Pais nao encontrado: " + code));
+                .orElseThrow(() -> new ResourceNotFoundException("País não encontrado: " + code));
     }
 
     public Country create(CountryDTO dto) {
@@ -45,7 +45,7 @@ public class CountryService {
                 .latitude(dto.latitude())
                 .longitude(dto.longitude());
 
-        enrich(builder, code, dto);
+        enrichFromApi(builder, code, dto);
         return countryRepository.save(builder.build());
     }
 
@@ -66,34 +66,55 @@ public class CountryService {
 
     public void delete(Long id) {
         if (!countryRepository.existsById(id))
-            throw new ResourceNotFoundException("Pais nao encontrado: id=" + id);
+            throw new ResourceNotFoundException("País não encontrado: id=" + id);
         countryRepository.deleteById(id);
     }
 
-    // --- helpers ---
+    // ---
 
-    private void enrich(Country.CountryBuilder builder, String code, CountryDTO dto) {
-        if (dto.capital() != null && dto.language() != null && dto.population() != null) {
-            builder.capital(dto.capital()).language(dto.language())
-                    .currencyCode(dto.currencyCode()).population(dto.population()).timezone(dto.timezone());
+    /**
+     * Enriquece o builder com dados da countries.dev quando campos opcionais
+     * nao foram informados no DTO.
+     */
+    private void enrichFromApi(Country.CountryBuilder builder, String code, CountryDTO dto) {
+        boolean allProvided = dto.capital() != null
+                && dto.language() != null
+                && dto.population() != null;
+
+        if (allProvided) {
+            builder.capital(dto.capital())
+                    .language(dto.language())
+                    .currencyCode(dto.currencyCode())
+                    .population(dto.population())
+                    .timezone(dto.timezone());
             return;
         }
 
         RestCountryResponse remote = restCountriesClient.fetchByCode(code);
         if (remote == null) return;
 
-        builder.capital(firstNonNull(dto.capital(),
-                remote.capital() != null && !remote.capital().isEmpty() ? remote.capital().get(0) : null));
-        builder.language(firstNonNull(dto.language(),
-                remote.languages() != null ? remote.languages().values().stream().findFirst().orElse(null) : null));
-        builder.currencyCode(firstNonNull(dto.currencyCode(),
-                remote.currencies() != null ? remote.currencies().keySet().stream().findFirst().orElse(null) : null));
+        // capital: agora String direta na countries.dev
+        builder.capital(firstNonNull(dto.capital(), remote.capital()));
+
+
+        String remoteLang = (remote.languages() != null && !remote.languages().isEmpty())
+                ? remote.languages().get(0).name() : null;
+        builder.language(firstNonNull(dto.language(), remoteLang));
+
+
+        String remoteCurrency = (remote.currencies() != null && !remote.currencies().isEmpty())
+                ? remote.currencies().get(0).code() : null;
+        builder.currencyCode(firstNonNull(dto.currencyCode(), remoteCurrency));
+
         builder.population(firstNonNull(dto.population(), remote.population()));
-        builder.timezone(firstNonNull(dto.timezone(),
-                remote.timezones() != null && !remote.timezones().isEmpty() ? remote.timezones().get(0) : null));
+
+        String remoteTz = (remote.timezones() != null && !remote.timezones().isEmpty())
+                ? remote.timezones().get(0) : null;
+        builder.timezone(firstNonNull(dto.timezone(), remoteTz));
 
         if (dto.latitude() == null && remote.latlng() != null && remote.latlng().size() >= 2) {
-            builder.latitude(remote.latlng().get(0)).longitude(remote.latlng().get(1));
+            builder.latitude(remote.latlng().get(0));
+            builder.longitude(remote.latlng().get(1));
         }
     }
 

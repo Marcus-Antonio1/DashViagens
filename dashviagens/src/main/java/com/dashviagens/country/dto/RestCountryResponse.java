@@ -1,32 +1,31 @@
 package com.dashviagens.country.dto;
 
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Mapeia o formato da resposta da REST Countries
- * Tem objetos aninhados: name.common, languages (mapa), currencies (mapa), etc.
+ * Mapeia a resposta da countries.dev (substituta da REST Countries v3.1 descontinuada).
+ * Endpoint: GET https://countries.dev/alpha/{code}
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record RestCountryResponse(
 
         @JsonProperty("name")
-        CountryName name,
+        String name,
 
-        @JsonProperty("cca3")
-        String cca3,
+        @JsonProperty("alpha3Code")
+        String alpha3Code,
 
         @JsonProperty("capital")
-        List<String> capital,
+        String capital,
 
         @JsonProperty("languages")
-        Map<String, String> languages,
+        List<LanguageInfo> languages,
 
         @JsonProperty("currencies")
-        Map<String, CurrencyInfo> currencies,
+        List<CurrencyInfo> currencies,
 
         @JsonProperty("population")
         Long population,
@@ -39,13 +38,13 @@ public record RestCountryResponse(
 
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public record CountryName(
-            @JsonProperty("common") String common
+    public record LanguageInfo(
+            @JsonProperty("name") String name
     ) {}
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record CurrencyInfo(
-            @JsonProperty("name") String name,
-            @JsonProperty("symbol") String symbol
+            @JsonProperty("code") String code,
+            @JsonProperty("name") String currencyName
     ) {}
 }

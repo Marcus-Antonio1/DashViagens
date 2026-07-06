@@ -35,7 +35,7 @@ dashviagens:
     expiration-minutes: 120
   external-apis:
     exchange-rate-base-url: https://api.frankfurter.dev
-    rest-countries-base-url: https://restcountries.com/v3.1
+    rest-countries-base-url: https://countries.dev
   admin:
     username: admin
     password: admin123
