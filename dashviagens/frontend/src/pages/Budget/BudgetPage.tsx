@@ -20,6 +20,14 @@ interface BudgetResult {
 const fmt = (v: number) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
+const ITEMS = [
+  { key: "estimatedFlight",     icon: "✈️", label: "Passagem estimada"  },
+  { key: "estimatedHotel",      icon: "🏨", label: "Hotel"              },
+  { key: "estimatedFood",       icon: "🍽️", label: "Alimentação"        },
+  { key: "estimatedTransport",  icon: "🚌", label: "Transporte"         },
+  { key: "estimatedActivities", icon: "📸", label: "Passeios"           },
+];
+
 export function BudgetPage() {
   const { data: countries } = useCountries();
 
@@ -53,118 +61,120 @@ export function BudgetPage() {
   return (
     <div className="budget-page">
       <div className="budget-container">
-        <div className="page-header">
-          <h1 className="page-title">Calculadora de viagem</h1>
-          <p className="page-sub">Estime o custo total com base no destino e orçamento</p>
+
+        <div className="budget-header">
+          <p className="budget-header__eyebrow">Planejamento financeiro</p>
+          <h1 className="budget-header__title">Calculadora de viagem</h1>
+          <p className="budget-header__sub">
+            Estime o custo total com base no destino, duração e orçamento disponível
+          </p>
         </div>
 
         <div className="budget-layout">
+
           {/* Formulário */}
           <div className="budget-form-card">
-            <form onSubmit={handleSubmit}>
-              <div className="budget-form-group">
-                <label className="budget-label">Destino</label>
-                <select
-                  className="budget-select"
-                  value={countryCode}
-                  onChange={e => setCountryCode(e.target.value)}
-                >
-                  <option value="">Selecione um país...</option>
-                  {countries?.map(c => (
-                    <option key={c.code} value={c.code}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="budget-form-row">
+            <div className="budget-form-card__header">
+              <p className="budget-form-card__title">Parâmetros da viagem</p>
+              <p className="budget-form-card__sub">Preencha os dados para calcular</p>
+            </div>
+            <div className="budget-divider" />
+            <div className="budget-form-body">
+              <form onSubmit={handleSubmit}>
                 <div className="budget-form-group">
-                  <label className="budget-label">Duração (dias)</label>
-                  <input
-                    className="budget-input"
-                    type="number"
-                    min="1"
-                    max="365"
-                    value={days}
-                    onChange={e => setDays(e.target.value)}
-                  />
+                  <label className="budget-label">Destino</label>
+                  <select
+                    className="budget-select"
+                    value={countryCode}
+                    onChange={e => { setCountryCode(e.target.value); setResult(null); }}
+                  >
+                    <option value="">Selecione um país...</option>
+                    {countries?.map(c => (
+                      <option key={c.code} value={c.code}>{c.name}</option>
+                    ))}
+                  </select>
                 </div>
-                <div className="budget-form-group">
-                  <label className="budget-label">Orçamento total (R$)</label>
-                  <input
-                    className="budget-input"
-                    type="number"
-                    min="1"
-                    value={budget}
-                    onChange={e => setBudget(e.target.value)}
-                  />
+
+                <div className="budget-form-row">
+                  <div className="budget-form-group">
+                    <label className="budget-label">Duração (dias)</label>
+                    <input
+                      className="budget-input"
+                      type="number" min="1" max="365"
+                      value={days}
+                      onChange={e => { setDays(e.target.value); setResult(null); }}
+                    />
+                  </div>
+                  <div className="budget-form-group">
+                    <label className="budget-label">Orçamento (R$)</label>
+                    <input
+                      className="budget-input"
+                      type="number" min="1"
+                      value={budget}
+                      onChange={e => { setBudget(e.target.value); setResult(null); }}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {error && <p className="budget-error">{error}</p>}
+                {error && <p className="budget-error">{error}</p>}
 
-              <button className="budget-btn" type="submit" disabled={loading}>
-                {loading ? "Calculando..." : "Calcular orçamento"}
-              </button>
-            </form>
+                <button className="budget-btn" type="submit" disabled={loading}>
+                  {loading ? "Calculando..." : "Calcular orçamento"}
+                </button>
+              </form>
+            </div>
           </div>
 
           {/* Resultado */}
-          {result && (
+          {result ? (
             <div className="budget-result">
               <div className="budget-result__header">
                 <div>
-                  <p className="budget-result__subtitle">
+                  <p className="budget-result__label">Estimativa para</p>
+                  <p className="budget-result__destination">
                     {result.days} dias em {selectedCountry?.name ?? result.countryCode}
                   </p>
-                  <p className="budget-result__total-label">Total estimado</p>
                 </div>
-                <p className="budget-result__total">{fmt(result.totalEstimated)}</p>
+                <div className="budget-result__right">
+                  <p className="budget-result__total-label">Total estimado</p>
+                  <p className="budget-result__total">{fmt(result.totalEstimated)}</p>
+                </div>
               </div>
 
               <div className="budget-result__rows">
-                <div className="budget-result__row">
-                  <span className="budget-result__item">✈ Passagem estimada</span>
-                  <span className="budget-result__value">{fmt(result.estimatedFlight)}</span>
-                </div>
-                <div className="budget-result__row">
-                  <span className="budget-result__item">🏨 Hotel · {result.days} dias</span>
-                  <span className="budget-result__value">{fmt(result.estimatedHotel)}</span>
-                </div>
-                <div className="budget-result__row">
-                  <span className="budget-result__item">🍽 Alimentação · {result.days} dias</span>
-                  <span className="budget-result__value">{fmt(result.estimatedFood)}</span>
-                </div>
-                <div className="budget-result__row">
-                  <span className="budget-result__item">🚌 Transporte · {result.days} dias</span>
-                  <span className="budget-result__value">{fmt(result.estimatedTransport)}</span>
-                </div>
-                <div className="budget-result__row">
-                  <span className="budget-result__item">📸 Passeios · {result.days} dias</span>
-                  <span className="budget-result__value">{fmt(result.estimatedActivities)}</span>
-                </div>
+                {ITEMS.map(item => (
+                  <div key={item.key} className="budget-result__row">
+                    <span className="budget-result__item">
+                      <span className="budget-result__item-icon">{item.icon}</span>
+                      {item.label}
+                      {item.key !== "estimatedFlight" && ` · ${result.days} dias`}
+                    </span>
+                    <span className="budget-result__value">
+                      {fmt(result[item.key as keyof BudgetResult] as number)}
+                    </span>
+                  </div>
+                ))}
               </div>
 
               <div className={`budget-result__surplus ${!result.withinBudget ? "deficit" : ""}`}>
                 <span className="budget-result__surplus-label">
-                  {result.withinBudget ? "Reserva disponível" : "Orçamento insuficiente"}
+                  {result.withinBudget ? "💰 Reserva disponível" : "⚠️ Orçamento insuficiente"}
                 </span>
                 <span className="budget-result__surplus-value">
                   {fmt(Math.abs(result.remaining))}
                 </span>
               </div>
             </div>
-          )}
-
-          {!result && !loading && (
+          ) : (
             <div className="budget-placeholder">
               <div className="budget-placeholder__icon">🧮</div>
-              <p className="budget-placeholder__text">
-                Preencha o formulário ao lado para ver a estimativa de custo detalhada.
+              <p className="budget-placeholder__title">Pronto para calcular</p>
+              <p className="budget-placeholder__sub">
+                Selecione um destino e informe os dados da viagem para ver a estimativa detalhada.
               </p>
             </div>
           )}
+
         </div>
       </div>
     </div>

@@ -27,7 +27,7 @@ export function HeroSection() {
         </h1>
 
         <p className="hero__sub">
-          Câmbio em tempo real, destinos turísticos e calculadora de custo —
+          Câmbio em tempo real, destinos turísticos e calculadora de custo
           tudo que você precisa para planejar a viagem dos seus sonhos.
         </p>
 
