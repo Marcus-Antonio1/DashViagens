@@ -8,6 +8,7 @@ export function Navbar() {
     { to: "/",           label: "Início"      },
     { to: "/exchange",   label: "Câmbio"      },
     { to: "/countries",  label: "Países"      },
+    { to: "/attractions",  label: "Atrações"      },
     { to: "/budget",     label: "Calculadora" },
   ];
 
