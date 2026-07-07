@@ -12,19 +12,35 @@ O projeto foi desenvolvido com foco em boas práticas de arquitetura, organizaç
 
 ## 📸 Preview
 
-> Em breve...
-
 ### Home
 
-*Screenshot da página inicial*
+<div align="center">
+<img src="https://github.com/user-attachments/assets/4896bdba-f7d8-44a1-acbe-ff45af9b5bbf" />
+</div>
 
 ### Países
 
-*Screenshot da listagem de países*
+<div align="center">
+<img src="https://github.com/user-attachments/assets/8c760637-6837-4f96-b526-a8a851ec3eb2" />
+</div>
+
+### Atrações
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/f08e5f41-6d44-4e79-83fa-203f61160f94" />
+</div>
 
 ### Calculadora
 
-*Screenshot da calculadora de orçamento*
+<div align="center">
+<img src="https://github.com/user-attachments/assets/7bc11528-5a7d-4d89-8f03-43e9d95de65f" />
+</div>
+
+### Câmbio
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/2f46923e-4fa1-4e88-84ce-c436a1da115f" />
+</div>
 
 ---
 
@@ -47,7 +63,6 @@ Moedas suportadas:
 - CHF
 - ARS
 - CLP
-- entre outras
 
 ---
 
@@ -75,10 +90,8 @@ Consulta dos países cadastrados contendo informações como:
 - Capital
 - Idioma
 - Moeda
-- População
 - Fuso horário
 - Melhor época para visitar
-- Coordenadas geográficas
 
 ---
 
@@ -90,8 +103,6 @@ Cada atração possui:
 
 - Nome
 - Descrição
-- Latitude
-- Longitude
 - Mapa interativo utilizando Leaflet + OpenStreetMap
 
 ---
@@ -117,22 +128,6 @@ Ao final é informado:
 - Valor total estimado
 - Valor restante
 - Se o orçamento é suficiente
-
----
-
-## 🔐 Painel administrativo
-
-Os endpoints de escrita são protegidos por autenticação JWT.
-
-Operações disponíveis:
-
-- Cadastro de países
-- Cadastro de atrações
-- Cadastro de custos médios
-- Atualizações
-- Exclusões
-
-Todos os endpoints de consulta permanecem públicos.
 
 ---
 
@@ -236,55 +231,6 @@ Toda comunicação com o backend é realizada através de serviços centralizado
 
 ---
 
-# 📁 Estrutura do Projeto
-
-```
-DashViagens
-│
-├── backend
-│   │
-│   ├── admin
-│   │   ├── controller
-│   │   ├── dto
-│   │   ├── entity
-│   │   ├── security
-│   │   └── service
-│   │
-│   ├── attraction
-│   │
-│   ├── common
-│   │   ├── config
-│   │   ├── exception
-│   │   └── util
-│   │
-│   ├── cost
-│   │
-│   ├── country
-│   │
-│   ├── exchange
-│   │
-│   └── resources
-│       ├── db
-│       │   └── migration
-│       └── application.yml
-│
-└── frontend
-    │
-    ├── api
-    ├── app
-    ├── assets
-    ├── components
-    ├── hooks
-    ├── layouts
-    ├── pages
-    ├── router
-    ├── styles
-    ├── types
-    └── utils
-```
-
----
-
 # ⚙️ Executando o projeto
 
 ## Pré-requisitos
@@ -376,6 +322,10 @@ http://localhost:8080/docs
 
 Toda a documentação da API estará disponível através do Swagger/OpenAPI.
 
+<div align="center">
+<img src="https://github.com/user-attachments/assets/5a3b4ff7-01d6-4358-8a7d-c18786e6fbfe" />
+</div>
+
 ---
 
 # ⚛️ Frontend
@@ -444,14 +394,6 @@ Requer token JWT para:
 ```
 Authorization: Bearer <token>
 ```
-
----
-
-# 📡 Endpoints da API
-
-Todos os endpoints de leitura são públicos.
-
-Os endpoints de escrita são protegidos por autenticação JWT.
 
 ---
 
@@ -601,107 +543,6 @@ DELETE /api/costs/{countryCode}
 
 ---
 
-# 🗄️ Modelo de Dados
-
-A aplicação utiliza PostgreSQL como banco relacional.
-
-## Countries
-
-```
-id
-code
-name
-capital
-language
-currency_code
-population
-timezone
-best_season
-best_season_description
-latitude
-longitude
-created_at
-updated_at
-```
-
----
-
-## Attractions
-
-```
-id
-country_id
-
-name
-description
-
-latitude
-longitude
-
-created_at
-updated_at
-```
-
-Relacionamento:
-
-```
-Country
-
-1 ------ N
-
-Attraction
-```
-
----
-
-## Country Costs
-
-```
-id
-
-country_id
-
-hotel_per_day
-food_per_day
-transport_per_day
-activities_per_day
-
-estimated_flight
-
-currency
-
-created_at
-updated_at
-```
-
-Relacionamento
-
-```
-Country
-
-1 ------ 1
-
-CountryCost
-```
-
----
-
-## Admin Users
-
-```
-id
-
-username
-
-password
-
-role
-
-created_at
-```
-
----
-
 # Decisões de Arquitetura
 
 Durante o desenvolvimento foram tomadas algumas decisões visando simplicidade, organização e facilidade de manutenção.
@@ -795,10 +636,6 @@ A autenticação foi implementada utilizando:
 - Spring Security
 - JWT
 
-Apenas usuários administradores podem alterar dados.
-
-As consultas permanecem públicas.
-
 ---
 
 # 💵 Sobre os custos médios
@@ -882,14 +719,6 @@ Algumas ideias que podem ser implementadas futuramente:
 
 ---
 
-# 🤝 Contribuições
-
-Sugestões, melhorias e feedbacks são sempre bem-vindos.
-
-Caso tenha alguma ideia para evoluir o projeto, fique à vontade para abrir uma **Issue** ou enviar um **Pull Request**.
-
----
-
 # 📈 Próximos passos
 
 Pretendo continuar evoluindo o DashViagens adicionando novas funcionalidades e melhorias de arquitetura.
@@ -922,10 +751,6 @@ Na sua opinião:
 **Você faria o deploy deste projeto?**
 
 ---
-
-# 👨‍💻 Autor
-
-**Marcus Antônio Toledo Silva**
 
 ### Contato
 
