@@ -11,19 +11,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-/**
- * Popula automaticamente os paises na primeira inicializacao.
- *
- * So executa se a tabela "countries" estiver vazia.
- * Os dados basicos (capital, idioma, moeda, populacao, fuso, lat/lng)
- * são buscados automaticamente na countries.dev so é necessario
- * informar o codigo alpha-3 e o nome do país.
- *
- * Os campos integrados manualmente (bestSeason, bestSeasonDescription)
- * são informados aqui pois não existem em nenhuma API publica.
- *
- * @Order(2): roda depois do AdminBootstrap (Order 1 implicito).
- */
 @Component
 @Order(2)
 public class CountrySeeder implements CommandLineRunner {
@@ -41,35 +28,49 @@ public class CountrySeeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (countryRepository.count() > 0) {
-            log.info("Paises ja populados seeder ignorado.");
+            log.info("Paises ja populados — seeder ignorado.");
             return;
         }
-
-        log.info("Populando paises iniciais via countries.dev...");
+        log.info("Populando paises via countries.dev...");
 
         List<CountryDTO> seeds = List.of(
-                country("JPN", "Japão",          "Primavera",  "Março a maio — sakura em flor, clima ameno e festivais tradicionais"),
-                country("ITA", "Itália",          "Primavera",  "Abril a junho — clima ideal, sem o calor intenso do verão"),
-                country("FRA", "França",          "Primavera",  "Abril a junho — Paris em flor, filas menores nos museus"),
-                country("PRT", "Portugal",        "Primavera",  "Março a maio — clima agradável e preços mais baixos"),
-                country("ESP", "Espanha",         "Primavera",  "Abril a junho — perfeito antes do verão lotado"),
-                country("USA", "EUA",             "Outono",     "Setembro a novembro — folhagem colorida e clima agradável"),
-                country("CAN", "Canadá",          "Verão",      "Junho a agosto — dias longos e parques nacionais acessíveis"),
-                country("ARG", "Argentina",       "Outono",     "Março a maio — Buenos Aires com temperatura ideal"),
-                country("CHL", "Chile",           "Verão",      "Dezembro a fevereiro — Patagônia e Atacama acessíveis"),
-                country("GRC", "Grécia",          "Primavera",  "Maio a junho — ilhas com clima bom antes da alta temporada"),
-                country("THA", "Tailândia",       "Seca",       "Novembro a fevereiro — calor seco, menos chuvas"),
-                country("DEU", "Alemanha",        "Verão",      "Junho a agosto — festivais, castelos e clima agradável"),
-                country("GBR", "Reino Unido",     "Verão",      "Junho a agosto — a época mais ensolarada do ano"),
-                country("AUS", "Austrália",       "Primavera",  "Setembro a novembro — clima ameno antes do verão intenso"),
-                country("MEX", "México",          "Seca",       "Dezembro a abril — praias cristalinas e sítios arqueológicos"),
-                country("NLD", "Países Baixos",   "Primavera",  "Abril a maio — tulipas em flor e dias iluminados"),
-                country("CHE", "Suíça",           "Verão",      "Junho a agosto — trilhas alpinas e lagos de tirar o fôlego")
+                country("JPN", "Japão",         "Primavera", "Março a maio — sakura em flor, clima ameno e festivais tradicionais",
+                        "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80"),
+                country("ITA", "Itália",         "Primavera", "Abril a junho — clima ideal, sem o calor intenso do verão",
+                        "https://images.unsplash.com/photo-1515542622106-078bda69bcb3?w=800&q=80"),
+                country("FRA", "França",         "Primavera", "Abril a junho — Paris em flor, filas menores nos museus",
+                        "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&q=80"),
+                country("PRT", "Portugal",       "Primavera", "Março a maio — clima agradável e preços mais baixos",
+                        "https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=800&q=80"),
+                country("ESP", "Espanha",        "Primavera", "Abril a junho — perfeito antes do verão lotado",
+                        "https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=800&q=80"),
+                country("USA", "EUA",            "Outono",   "Setembro a novembro — folhagem colorida e clima agradável",
+                        "https://images.unsplash.com/photo-1501466044931-62695aada8e9?w=800&q=80"),
+                country("CAN", "Canadá",         "Verão",    "Junho a agosto — dias longos e parques nacionais acessíveis",
+                        "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=800&q=80"),
+                country("ARG", "Argentina",      "Outono",   "Março a maio — Buenos Aires com temperatura ideal",
+                        "https://images.unsplash.com/photo-1612294037637-ec328d0e075e?w=800&q=80"),
+                country("CHL", "Chile",          "Verão",    "Dezembro a fevereiro — Patagônia e Atacama acessíveis",
+                        "https://images.unsplash.com/photo-1478827536114-da961b7f86d2?w=800&q=80"),
+                country("GRC", "Grécia",         "Primavera","Maio a junho — ilhas com clima bom antes da alta temporada",
+                        "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80"),
+                country("THA", "Tailândia",      "Seca",     "Novembro a fevereiro — calor seco, menos chuvas",
+                        "https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80"),
+                country("DEU", "Alemanha",       "Verão",    "Junho a agosto — festivais, castelos e clima agradável",
+                        "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&q=80"),
+                country("GBR", "Reino Unido",    "Verão",    "Junho a agosto — a época mais ensolarada do ano",
+                        "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80"),
+                country("AUS", "Austrália",      "Primavera","Setembro a novembro — clima ameno antes do verão intenso",
+                        "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80"),
+                country("MEX", "México",         "Seca",     "Dezembro a abril — praias cristalinas e sítios arqueológicos",
+                        "https://images.unsplash.com/photo-1518638150340-f706e86654de?w=800&q=80"),
+                country("NLD", "Países Baixos",  "Primavera","Abril a maio — tulipas em flor e dias iluminados",
+                        "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=800&q=80"),
+                country("CHE", "Suíça",          "Verão",    "Junho a agosto — trilhas alpinas e lagos de tirar o fôlego",
+                        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80")
         );
 
-        int sucesso = 0;
-        int falha   = 0;
-
+        int sucesso = 0, falha = 0;
         for (CountryDTO dto : seeds) {
             try {
                 countryService.create(dto);
@@ -80,22 +81,17 @@ public class CountrySeeder implements CommandLineRunner {
                 falha++;
             }
         }
-
         log.info("Seeder concluido: {} importados, {} com falha.", sucesso, falha);
     }
 
-    /**
-     * Cria um DTO com apenas os campos
-     * capital, language, currencyCode, population, timezone e latlng
-     * serão preenchidos automaticamente pelo CountryService via countries.dev.
-     */
-    private CountryDTO country(String code, String name, String bestSeason, String bestSeasonDescription) {
+    private CountryDTO country(String code, String name, String bestSeason,
+                               String bestSeasonDesc, String imageUrl) {
         return new CountryDTO(
-                null,                           // id — ignorado na criacao
-                code, name,
-                null, null, null, null, null,   // capital/lang/currency/pop/tz — via countries.dev
-                bestSeason, bestSeasonDescription,
-                null, null                      // lat/lng — via countries.dev
+                null, code, name,
+                null, null, null, null, null,
+                bestSeason, bestSeasonDesc,
+                null, null,
+                imageUrl
         );
     }
 }

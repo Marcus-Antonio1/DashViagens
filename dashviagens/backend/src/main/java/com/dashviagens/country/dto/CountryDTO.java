@@ -12,6 +12,7 @@ public record CountryDTO(
         String bestSeason,
         String bestSeasonDescription,
         Double latitude,
-        Double longitude
+        Double longitude,
+        String imageUrl
 ) {
 }

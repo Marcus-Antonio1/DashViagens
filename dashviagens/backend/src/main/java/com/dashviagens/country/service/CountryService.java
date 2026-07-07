@@ -13,17 +13,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class CountryService {
 
-    private final CountryRepository countryRepository;
-    private final RestCountriesClient restCountriesClient;
+    private final CountryRepository     countryRepository;
+    private final RestCountriesClient   restCountriesClient;
 
     public CountryService(CountryRepository countryRepository, RestCountriesClient restCountriesClient) {
-        this.countryRepository = countryRepository;
+        this.countryRepository   = countryRepository;
         this.restCountriesClient = restCountriesClient;
     }
 
-    public List<Country> findAll() {
-        return countryRepository.findAll();
-    }
+    public List<Country> findAll()  { return countryRepository.findAll(); }
 
     public Country findById(Long id) {
         return countryRepository.findById(id)
@@ -43,7 +41,8 @@ public class CountryService {
                 .bestSeason(dto.bestSeason())
                 .bestSeasonDescription(dto.bestSeasonDescription())
                 .latitude(dto.latitude())
-                .longitude(dto.longitude());
+                .longitude(dto.longitude())
+                .imageUrl(dto.imageUrl());
 
         enrichFromApi(builder, code, dto);
         return countryRepository.save(builder.build());
@@ -61,6 +60,7 @@ public class CountryService {
         if (dto.bestSeasonDescription() != null) existing.setBestSeasonDescription(dto.bestSeasonDescription());
         if (dto.latitude() != null)              existing.setLatitude(dto.latitude());
         if (dto.longitude() != null)             existing.setLongitude(dto.longitude());
+        if (dto.imageUrl() != null)              existing.setImageUrl(dto.imageUrl());
         return countryRepository.save(existing);
     }
 
@@ -70,51 +70,29 @@ public class CountryService {
         countryRepository.deleteById(id);
     }
 
-    // ---
-
-    /**
-     * Enriquece o builder com dados da countries.dev quando campos opcionais
-     * nao foram informados no DTO.
-     */
     private void enrichFromApi(Country.CountryBuilder builder, String code, CountryDTO dto) {
-        boolean allProvided = dto.capital() != null
-                && dto.language() != null
-                && dto.population() != null;
-
+        boolean allProvided = dto.capital() != null && dto.language() != null && dto.population() != null;
         if (allProvided) {
-            builder.capital(dto.capital())
-                    .language(dto.language())
-                    .currencyCode(dto.currencyCode())
-                    .population(dto.population())
-                    .timezone(dto.timezone());
+            builder.capital(dto.capital()).language(dto.language())
+                    .currencyCode(dto.currencyCode()).population(dto.population()).timezone(dto.timezone());
             return;
         }
-
         RestCountryResponse remote = restCountriesClient.fetchByCode(code);
         if (remote == null) return;
 
-        // capital: agora String direta na countries.dev
         builder.capital(firstNonNull(dto.capital(), remote.capital()));
-
-
-        String remoteLang = (remote.languages() != null && !remote.languages().isEmpty())
+        String lang = (remote.languages() != null && !remote.languages().isEmpty())
                 ? remote.languages().get(0).name() : null;
-        builder.language(firstNonNull(dto.language(), remoteLang));
-
-
-        String remoteCurrency = (remote.currencies() != null && !remote.currencies().isEmpty())
+        builder.language(firstNonNull(dto.language(), lang));
+        String cur = (remote.currencies() != null && !remote.currencies().isEmpty())
                 ? remote.currencies().get(0).code() : null;
-        builder.currencyCode(firstNonNull(dto.currencyCode(), remoteCurrency));
-
+        builder.currencyCode(firstNonNull(dto.currencyCode(), cur));
         builder.population(firstNonNull(dto.population(), remote.population()));
-
-        String remoteTz = (remote.timezones() != null && !remote.timezones().isEmpty())
+        String tz = (remote.timezones() != null && !remote.timezones().isEmpty())
                 ? remote.timezones().get(0) : null;
-        builder.timezone(firstNonNull(dto.timezone(), remoteTz));
-
+        builder.timezone(firstNonNull(dto.timezone(), tz));
         if (dto.latitude() == null && remote.latlng() != null && remote.latlng().size() >= 2) {
-            builder.latitude(remote.latlng().get(0));
-            builder.longitude(remote.latlng().get(1));
+            builder.latitude(remote.latlng().get(0)).longitude(remote.latlng().get(1));
         }
     }
 
