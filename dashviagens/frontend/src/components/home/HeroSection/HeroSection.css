@@ -1,34 +1,199 @@
 .hero {
-    padding: 80px 24px;
-    text-align: center;
+  background: var(--color-ink);
+  padding: 80px 24px 64px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.hero__content {
-    max-width: 800px;
-    margin: 0 auto;
+/* Grade decorativa no fundo */
+.hero__bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(56,189,248,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
 }
 
-.hero h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
+/* Brilho central suave */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(56,189,248,0.12) 0%, transparent 70%);
+  pointer-events: none;
 }
 
-.hero p {
-    font-size: 1.2rem;
-    color: #666;
-    line-height: 1.7;
+.hero__inner {
+  max-width: 680px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
+/* Badge */
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(56,189,248,0.1);
+  border: 0.5px solid rgba(56,189,248,0.25);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-accent);
+  margin-bottom: 24px;
+  letter-spacing: 0.01em;
+}
+
+.hero__badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Título */
+.hero__title {
+  font-size: 48px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero__title-highlight {
+  color: transparent;
+  background: linear-gradient(135deg, var(--color-accent), #60A5FA);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Subtítulo */
+.hero__sub {
+  font-size: 16px;
+  color: #64748B;
+  line-height: 1.7;
+  max-width: 500px;
+  margin: 0 auto 32px;
+}
+
+/* Botões */
 .hero__actions {
-    margin-top: 40px;
-    display: flex;
-    justify-content: center;
-    gap: 16px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
 }
 
-.hero__actions button {
-    padding: 12px 28px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+.hero__btn-primary {
+  background: var(--color-accent);
+  color: var(--color-ink);
+  border-radius: var(--radius-sm);
+  padding: 11px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.1s;
+  box-shadow: 0 0 20px rgba(56,189,248,0.25);
+}
+.hero__btn-primary:hover {
+  background: var(--color-accent-dk);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.hero__btn-secondary {
+  background: rgba(255,255,255,0.05);
+  color: #94A3B8;
+  border: 0.5px solid #334155;
+  border-radius: var(--radius-sm);
+  padding: 11px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.hero__btn-secondary:hover {
+  color: #fff;
+  border-color: #64748B;
+  background: rgba(255,255,255,0.08);
+}
+
+/* Faixa de cotações */
+.hero__rates {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid #1E293B;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.hero__rate {
+  padding: 12px 20px;
+  border-right: 0.5px solid #1E293B;
+  text-align: left;
+}
+
+.hero__rate:last-child { border-right: none; }
+
+.hero__rate-code {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #475569;
+  letter-spacing: 0.06em;
+  margin-bottom: 2px;
+}
+
+.hero__rate-value {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.01em;
+  margin-bottom: 1px;
+}
+
+.hero__rate-label {
+  display: block;
+  font-size: 10px;
+  color: #475569;
+}
+
+.hero__rate--link {
+  padding: 12px 16px;
+}
+
+.hero__rate--link a {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.hero__rate--link a:hover { color: var(--color-accent-dk); }
+
+@media (max-width: 600px) {
+  .hero__title { font-size: 32px; }
+  .hero__rates { flex-wrap: wrap; }
+  .hero { padding: 60px 24px 48px; }
 }

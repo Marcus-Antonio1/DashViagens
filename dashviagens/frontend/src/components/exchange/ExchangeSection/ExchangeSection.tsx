@@ -1,49 +1,54 @@
+import { Link } from "react-router-dom";
 import { ExchangeCard } from "../ExchangeCard/ExchangeCard";
-
 import { useExchangeRates } from "../../../hooks/useExchangeRates";
-
 import "./ExchangeSection.css";
 
+const FEATURED = ["USD", "EUR", "GBP", "JPY"];
+
 export function ExchangeSection() {
+  const { data, isLoading, error } = useExchangeRates();
 
-const { data, isLoading, error } = useExchangeRates();
+  const date = data?.date
+    ? new Date(data.date + "T12:00:00").toLocaleDateString("pt-BR", {
+        day: "2-digit", month: "long", year: "numeric",
+      })
+    : null;
 
-if (isLoading) {
+  return (
+    <section className="exchange-section">
+      <div className="exchange-section__header">
+        <div>
+          <p className="exchange-section__eyebrow">Câmbio em tempo real</p>
+          <h2 className="exchange-section__title">Cotações do dia</h2>
+          {date && <p className="exchange-section__sub">Atualizado em {date}</p>}
+        </div>
+        <Link to="/exchange" className="exchange-section__link">
+          Ver todas as moedas →
+        </Link>
+      </div>
 
-return <p>Carregando cotações...</p>;
+      {isLoading && (
+        <div className="exchange-section__grid">
+          {FEATURED.map(c => <div key={c} className="exchange-card exchange-card--skeleton" />)}
+        </div>
+      )}
 
-}
+      {error && (
+        <div className="exchange-section__error">
+          Erro ao carregar cotações. Verifique a conexão com o backend.
+        </div>
+      )}
 
-if (error || !data || !data.rates) {
-
-return <p>Erro ao carregar cotações.</p>;
-
-}
-
-const usd = data.rates["USD"] ? 1 / data.rates["USD"] : 0;
-
-const eur = data.rates["EUR"] ? 1 / data.rates["EUR"] : 0;
-
-const gbp = data.rates["GBP"] ? 1 / data.rates["GBP"] : 0;
-
-return (
-
-<section className="exchange-section">
-
-<h2>Cotações do dia</h2>
-
-<div className="exchange-grid">
-
-<ExchangeCard currency="USD" value={usd} />
-
-<ExchangeCard currency="EUR" value={eur} />
-
-<ExchangeCard currency="GBP" value={gbp} />
-
-</div>
-
-</section>
-
-);
-
+      {data && (
+        <div className="exchange-section__grid">
+          {FEATURED.map(code => {
+            const value = data.rates[code];
+            return value ? (
+              <ExchangeCard key={code} currency={code} value={Number(value)} />
+            ) : null;
+          })}
+        </div>
+      )}
+    </section>
+  );
 }

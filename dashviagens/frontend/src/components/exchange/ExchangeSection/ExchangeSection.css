@@ -1,4 +1,6 @@
-.exchange-section { padding: 48px 0; }
+.exchange-section {
+  padding: 48px 0 0;
+}
 
 .exchange-section__header {
   display: flex;
@@ -9,7 +11,7 @@
   gap: 12px;
 }
 
-.exchange-section__label {
+.exchange-section__eyebrow {
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -38,6 +40,7 @@
   text-decoration: none;
   white-space: nowrap;
 }
+.exchange-section__link:hover { color: var(--color-ink); }
 
 .exchange-section__grid {
   display: grid;
@@ -54,8 +57,9 @@
   color: var(--color-down);
 }
 
+/* Skeleton */
 .exchange-card--skeleton {
-  height: 110px;
+  height: 130px;
   background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite;
